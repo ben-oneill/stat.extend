@@ -100,8 +100,8 @@ CONF.mean <- function(alpha, x = NULL, sample.mean = mean(x),
   TT  <- abs(qt(alpha/2, df, ncp = 0));
   UU  <- if (N == Inf) { 1 } else { (N-n)/N };
   ADJ <- if (!unsampled) { sqrt(UU) } else { 1/sqrt(UU) }
-  L   <- sample.mean - sample.variance*ADJ*TT/sqrt(n);
-  U   <- sample.mean + sample.variance*ADJ*TT/sqrt(n);
+  L   <- sample.mean - sqrt(sample.variance)*ADJ*TT/sqrt(n);
+  U   <- sample.mean + sqrt(sample.variance)*ADJ*TT/sqrt(n);
   CONF <- sets::interval(l = L, r = U, bounds = 'closed');
   attr(CONF, 'method') <- as.character(NA);
   
