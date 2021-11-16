@@ -21,5 +21,6 @@ Imports:
 Suggests:
     extraDistr,
     invgamma,
+    matrixStats,
     VGAM
 RoxygenNote: 7.0.2
