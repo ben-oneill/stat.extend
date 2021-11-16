@@ -12,5 +12,6 @@ importFrom("stats", "dbeta", "dcauchy", "dexp", "df", "dgamma",
            "pbinom", "pgeom", "phyper", "pnbinom", "ppois", "qbeta",
            "qbinom", "qexp", "qf", "qgamma", "qgeom", "qhyper",
            "qlnorm", "qnbinom", "qnorm", "qpois", "qt", "qunif",
-           "qweibull", "qcauchy", "dchisq", "qchisq")
+           "qweibull", "qcauchy", "dchisq", "qchisq",
+           "dbinom", "dpois", "rbinom")
 importFrom("stats", "var")
