@@ -21,3 +21,10 @@ The subfactorial numbers count the number of derangements of a set of objects (p
 appears in its original position).  This function computes the logarithms of the subfactorial numbers for a given
 input vector specifying the numbers of interest.
 }
+\examples{
+# In the limit n! / !n goes to e
+# so limit of differences of logs is 1
+lfactorial(1000) - lsubfactorial(1000)
+
+
+}

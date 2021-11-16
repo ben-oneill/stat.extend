@@ -9,7 +9,13 @@
 #' @param x A vector of non-negative integers
 #' @return If the input is a vector of non-negative integers, the output will be a vector of the logarithms of
 #' the corresponding subfactorial numbers.
-
+#'
+#' @examples 
+#' # In the limit n! / !n goes to e
+#' # so limit of differences of logs is 1
+#' lfactorial(1000) - lsubfactorial(1000)
+#' 
+#' 
 
 lsubfactorial <- function(x) {
   
