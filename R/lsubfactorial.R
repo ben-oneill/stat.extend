@@ -13,14 +13,8 @@
 
 lsubfactorial <- function(x) {
   
-  #Check input
-  if (!is.numeric(x))                       stop('Error: Input x should be composed of non-negative integers')
-  xx <- as.integer(x)
-  if (!all(x == xx))                        stop('Error: Input x should be composed of non-negative integers')
-  if (min(x) < 0)                           stop('Error: Input x should be composed of non-negative integers')
-  
   #Compute values of the subfactorials recursively
-  MAX <- max(xx)
+  MAX <- max(x, na.rm = TRUE)
   LL  <- rep(0, max(2,MAX+1))
   LL[2] <- -Inf
   if (MAX > 1) {
@@ -28,9 +22,12 @@ lsubfactorial <- function(x) {
       LL[k+1] <- log(k-1) + matrixStats::logSumExp(c(LL[k], LL[k-1])) } }
   
   #Compute output
-  OUT <- rep(0, length(xx))
-  for (i in 1:length(xx)) {
-    OUT[i] <- LL[xx[i]+1] }
+  OUT <- rep(0, length(x))
+  for (i in seq_along(x)) {
+    if (x[i] < 0  || is.na(x[i]) ) {
+      OUT[i] <- NA } 
+    else {
+      OUT[i] <- LL[x[i]+1]}}
   
   #Return output
   OUT }
