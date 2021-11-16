@@ -1,9 +1,8 @@
 
 stopifnot(all.equal(
   stat.extend::CONF.mean(.05, mtcars$mpg, N=1000),
-  structure(list(list(l = 7.20563283519216, r = 32.9756171648078, 
-                      lc = TRUE, rc = TRUE)), class = c("ci", "interval"), domain = "R", method = NA_character_, data = "Interval uses 32 data points from data mtcars$mpg with sample variance = 36.3241 and assumed kurtosis = 3.0000", confidence = 0.95, parameter = "mean for population of size 1000")
-))
+  structure(list(list(l = 17.9527283309983, r = 22.2285216690017, 
+                      lc = TRUE, rc = TRUE)), class = c("ci", "interval"), domain = "R", method = NA_character_, data = "Interval uses 32 data points from data mtcars$mpg with sample variance = 36.3241 and assumed kurtosis = 3.0000", confidence = 0.95, parameter = "mean for population of size 1000")))
 
 stopifnot(all.equal(
   stat.extend::CONF.var(.05, mtcars$mpg, N=1000),
