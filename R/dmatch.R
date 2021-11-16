@@ -14,7 +14,7 @@
 #' @return If all inputs are correctly specified (i.e., parameters are in allowable range) then the output will
 #' be a vector of probabilities/log-probabilities corresponding to the vector argument x
 
-dmatch <- function(x, size, prob = 0, log = FALSE) {
+dmatching <- function(x, size, prob = 0, log = FALSE) {
 
   #Check inputs
   if (!is.numeric(x))                       stop('Error: Input x should be numeric')

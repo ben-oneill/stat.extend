@@ -15,7 +15,7 @@
 #' @return If all inputs are correctly specified (i.e., parameters are in allowable range) then the output will
 #' be a vector of probabilities/log-probabilities corresponding to the vector argument x
 
-pmatch <- function(q, size, prob = 0, lower.tail = TRUE, log.p = FALSE) {
+pmatching <- function(q, size, prob = 0, lower.tail = TRUE, log.p = FALSE) {
 
   #Check inputs
   x <- q

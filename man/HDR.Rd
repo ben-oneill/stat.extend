@@ -19,7 +19,7 @@
 \alias{HDR.pois}
 \alias{HDR.nbinom}
 \alias{HDR.arcsine}
-\alias{HDR.match}
+\alias{HDR.matching}
 \alias{HDR.betapr}
 \alias{HDR.fatigue}
 \alias{HDR.gompertz}
@@ -159,7 +159,7 @@ HDR.arcsine(
   iterlim = 100
 )
 
-HDR.match(cover.prob, size, prob = 0)
+HDR.matching(cover.prob, size, prob = 0)
 
 HDR.betapr(
   cover.prob,

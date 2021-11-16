@@ -13,7 +13,7 @@
 #' @return If all inputs are correctly specified (i.e., parameters are in allowable range) then the output will
 #' be a vector of pseudo-random numbers from the distribution
 
-rmatch <- function(n, size, prob = 0) {
+rmatching <- function(n, size, prob = 0) {
   
   #Check inputs
   if (!is.numeric(n))                        stop('Error: Input n should be numeric')

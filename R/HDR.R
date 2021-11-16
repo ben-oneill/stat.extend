@@ -583,7 +583,7 @@ print.hdr <- function(x, ...) {
 
 
 #' @rdname HDR
-HDR.match <- function(cover.prob, size, prob = 0) {
+HDR.matching <- function(cover.prob, size, prob = 0) {
   
   #Check inputs
   if (!is.numeric(size))                    stop('Error: Size parameter should be a non-negative integer')

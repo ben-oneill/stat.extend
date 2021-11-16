@@ -15,7 +15,7 @@
 #' @return If all inputs are correctly specified (i.e., parameters are in allowable range) then the output will
 #' be a vector of quantiles corresponding to the vector argument p
 
-qmatch <- function(p, size, prob = 0, lower.tail = TRUE, log.p = FALSE) {
+qmatching <- function(p, size, prob = 0, lower.tail = TRUE, log.p = FALSE) {
 
   #Check inputs
   if (!is.numeric(p))                       stop('Error: Input p should be numeric')
