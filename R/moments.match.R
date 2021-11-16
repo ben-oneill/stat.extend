@@ -7,10 +7,9 @@
 #'
 #' O'Neill, B. (2021) A generalised matching distribution for the problem of coincidences.
 #'
-#' @usage \code{moments.match(size, prob = 0, include.sd = FALSE)}
 #' @param size The size parameter for the generalised matching distribution (number of objects to match)
 #' @param prob The probability parameter for the generalised matching distribution (probability of known match)
-#' @include.sd Logical value; if \code{TRUE} the output includes the standard deviation
+#' @param include.sd Logical value; if \code{TRUE} the output includes the standard deviation
 #' @return If all inputs are correctly specified (i.e., parameters are in allowable range) then the output will be
 #' a data frame of moments
 

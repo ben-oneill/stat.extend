@@ -7,7 +7,6 @@
 #'
 #' O'Neill, B. (2021) A generalised matching distribution for the problem of coincidences.
 #'
-#' @usage \code{rmatch(n, size, prob = 0)}
 #' @param n A non-negative integer specifying the number of rdandom values to produce
 #' @param size The size parameter for the generalised matching distribution (number of objects to match)
 #' @param prob The probability parameter for the generalised matching distribution (probability of known match)

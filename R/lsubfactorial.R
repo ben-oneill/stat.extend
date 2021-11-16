@@ -6,7 +6,6 @@
 #' appears in its original position).  This function computes the logarithms of the subfactorial numbers for a given
 #' input vector specifying the numbers of interest.
 #'
-#' @usage \code{lsubfactorial(x)}
 #' @param x A vector of non-negative integers
 #' @return If the input is a vector of non-negative integers, the output will be a vector of the logarithms of
 #' the corresponding subfactorial numbers.

@@ -7,7 +7,6 @@
 #'
 #' O'Neill, B. (2021) A generalised matching distribution for the problem of coincidences.
 #'
-#' @usage \code{pmatch(q, size, prob = 0, lower.tail = TRUE, log.p = FALSE)}
 #' @param q A vector of numeric values to be used as arguments for the cumulative distribution function
 #' @param size The size parameter for the generalised matching distribution (number of objects to match)
 #' @param prob The probability parameter for the generalised matching distribution (probability of known match)

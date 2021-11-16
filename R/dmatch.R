@@ -7,7 +7,6 @@
 #'
 #' O'Neill, B. (2021) A generalised matching distribution for the problem of coincidences.
 #'
-#' @usage \code{dmatch(x, size, prob = 0, log = FALSE)}
 #' @param x A vector of numeric values to be used as arguments for the mass function
 #' @param size The size parameter for the generalised matching distribution (number of objects to match)
 #' @param prob The probability parameter for the generalised matching distribution (probability of known match)
