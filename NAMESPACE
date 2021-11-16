@@ -4,6 +4,9 @@ export(CONF.var)
 export(CONF.prop)
 export(lsubfactorial)
 export(reformat)
+
+export(dmatching, pmatching, qmatching, rmatching, moments.match)
+
 S3method(print,hdr)
 S3method(print,ci)
 S3method(as.data.frame,hdr)

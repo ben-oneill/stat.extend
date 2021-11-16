@@ -12,6 +12,9 @@
 #' @param include.sd Logical value; if \code{TRUE} the output includes the standard deviation
 #' @return If all inputs are correctly specified (i.e., parameters are in allowable range) then the output will be
 #' a data frame of moments
+#' 
+#' @examples 
+#' moments.match(5)
 
 moments.match <- function(size, prob = 0, include.sd = FALSE) {
 

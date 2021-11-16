@@ -26,3 +26,6 @@ Further details on the distribution can be found in the following paper:
 
 O'Neill, B. (2021) A generalised matching distribution for the problem of coincidences.
 }
+\examples{
+moments.match(5)
+}
