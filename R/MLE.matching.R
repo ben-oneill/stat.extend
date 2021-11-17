@@ -243,16 +243,16 @@ MLE.matching <- function(x, size, CI.method = 'asymptotic', conf.level = 0.95, b
         warning(WARNING) } }
   
   #Set object class
-  class(OUT.MLE) <- c('list', 'mle.match')
+  class(OUT.MLE) <- c('list', 'mle.matching')
   
   #Give output
   OUT.MLE }
 
 
-print.mle.match <- function(object, digits = 6) {
+print.mle.matching <- function(object, digits = 6) {
   
   #Check input
-  if (!('mle.match' %in% class(object)))    stop('Error: This print method is for objects of class \'mle.match\'')
+  if (!('mle.matching' %in% class(object)))    stop('Error: This print method is for objects of class \'mle.matching\'')
   
   #Extract information
   DATA.NAME <- object$data.name
