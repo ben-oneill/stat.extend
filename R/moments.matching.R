@@ -14,9 +14,9 @@
 #' a data frame of moments
 #' 
 #' @examples 
-#' moments.match(5)
+#' moments.matching(5)
 
-moments.match <- function(size, prob = 0, include.sd = FALSE) {
+moments.matching <- function(size, prob = 0, include.sd = FALSE) {
 
   #Check that argument and parameters are appropriate type
   if (!is.numeric(size))                    stop('Error: Size parameter is not numeric')
