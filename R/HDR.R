@@ -53,7 +53,7 @@
 #'   HDR.gengamma\tab  d, shape1 \tab k, shape2 \tab rate, scale \cr
 #'   HDR.gumbelII\tab shape    \tab scale  \tab       \cr
 #'   HDR.lgamma  \tab shape    \tab scale  \tab location\cr
-#'   HDR.match   \tab size     \tab prob   \tab       \cr
+#'   HDR.matching   \tab size     \tab prob   \tab       \cr
 #'   }
 #'
 #' The table above shows the parameters in each of the distributions.  Some have default values, but most need to be specified.  (For the gamma
