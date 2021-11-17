@@ -664,13 +664,19 @@ HDR.matching <- function(cover.prob, size, prob = 0) {
         BASE.LOGPROBS[nn+1, ] <- BASE.LOGPROBS[nn+1, ] -
           matrixStats::logSumExp(BASE.LOGPROBS[nn+1, ]) }
       
+      #Set matrix M
+      M <- matrix(-Inf, nrow = n+1, ncol = n+1)
+      rownames(M) <- sprintf('k[%s]', 0:n)
+      colnames(M) <- sprintf('l[%s]', 0:n)
+      for (k in 0:n) {
+      for (l in 0:k) {
+        M[k+1, l+1] <- BASE.LOGPROBS[n-l+1, k-l+1] } }
+
       #Compute vector of log-probability values
       LOGPROBS <- rep(-Inf, n+1)
+      LOGBINOM <- dbinom(0:n, size = n, prob = prob, log = TRUE)
       for (k in 0:n) {
-        T1 <- dbinom(0:k, size = n, prob = prob, log = TRUE)
-        T2 <- rep(-Inf, k+1)
-        for (l in 0:k) { T2[l+1] <- BASE.LOGPROBS[n-l+1, k-l+1] }
-        LOGPROBS[k+1] <- matrixStats::logSumExp(T1 + T2) }
+        LOGPROBS[k+1] <- matrixStats::logSumExp(LOGBINOM + M[k+1, ]) }
       LOGPROBS <- LOGPROBS - matrixStats::logSumExp(LOGPROBS) } }
   
   #Set density function
