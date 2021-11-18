@@ -5,10 +5,12 @@ export(CONF.prop)
 export(lsubfactorial)
 export(reformat)
 
-export(dmatching, pmatching, qmatching, rmatching, moments.matching)
+export(dmatching, pmatching, qmatching, rmatching, moments.matching, MLE.matching)
+
 
 S3method(print,hdr)
 S3method(print,ci)
+S3method(print,mle.matching)
 S3method(as.data.frame,hdr)
 S3method(as.data.frame,ci)
 importFrom("stats", "dbeta", "dcauchy", "dexp", "df", "dgamma",
@@ -18,4 +20,4 @@ importFrom("stats", "dbeta", "dcauchy", "dexp", "df", "dgamma",
            "qlnorm", "qnbinom", "qnorm", "qpois", "qt", "qunif",
            "qweibull", "qcauchy", "dchisq", "qchisq",
            "dbinom", "dpois", "rbinom")
-importFrom("stats", "var")
+importFrom("stats", "quantile", "sd", "var")

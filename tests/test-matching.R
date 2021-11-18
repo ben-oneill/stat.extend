@@ -19,6 +19,6 @@ stopifnot(!is.unsorted(pmatching(qmatching(0:100/100, 5), 5)))
 
 
 stopifnot(all.equal(
-  moments.match(5),
+  moments.matching(5),
   structure(list(mean = 1, var = 1, skew = 1, kurt = 4, excess.kurt = 1), row.names = c(NA, -1L), class = "data.frame")
 ))

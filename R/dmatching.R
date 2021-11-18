@@ -23,8 +23,13 @@
 #' 
 #' @examples 
 #' x <- rmatching(1000, 5)
-#' table(x)
+#' tabulate(x)
 #' # No Fours!
+#' # This is actually one of the key properties of the matching distribution.  
+#' # With size parameter n the distribution has support 0,1,2,...,n-2,n (i.e., it 
+#' # cannot give outcome n-1). The reason for this is that in a permutation it 
+#' # is impossible to give n-1 matches. 
+#' # If there are n-1 matches then the last object in the permutation must also be a match.
 #' dmatching(0:5, 5)
 #' 
 #' @name Matching

@@ -6,15 +6,26 @@
 #' from the generalised matching distribution.  Further details on the distribution can be found in 
 #' the following paper:
 #'
+#' @references 
 #' O'Neill, B. (2021) A generalised matching distribution for the problem of coincidences.
 #'
-#' @usage \code{MLE.matching(x)}
 #' @param x A vector of numeric values to be used as arguments for the mass function
 #' @param size The size parameter for the generalised matching distribution (number of objects to match)
 #' @param CI.method The method used to compute the confidence interval ('asymptotic' or 'bootstrap')
+#' @param conf.level The width of the CI
 #' @param bootstrap.sims The number of bootstrap simulations used in the bootstrap confidence interval
 #' @return If all inputs are correctly specified (i.e., parameters are in allowable range) then the output will
 #' be a list of outputs for the MLE
+#' 
+#' @examples 
+#' 
+#' X <- rmatching(20, 5, .1)
+#' 
+#' # For comparison
+#' # MASS::fitdistr(X, dmatching, start=list(prob=.5), size=5, lower=c(prob=0), upper=c(prob=1))
+#' 
+#' MLE.matching(X, 5)
+#' 
 
 MLE.matching <- function(x, size, CI.method = 'asymptotic', conf.level = 0.95, bootstrap.sims = 10^3) {
 
@@ -162,7 +173,7 @@ MLE.matching <- function(x, size, CI.method = 'asymptotic', conf.level = 0.95, b
       SAMPLE <- sample(x, size = m, replace = TRUE)
       
       #Set objective function
-      NEGLOGLIKE <- function(phi) {
+      NEGLOGLIKE.bs <- function(phi) {
         
         #Set probability parameter
         prob <- exp(phi)/(exp(phi) + exp(-phi))
@@ -204,7 +215,7 @@ MLE.matching <- function(x, size, CI.method = 'asymptotic', conf.level = 0.95, b
       start.phi  <- atanh(2*start.prob - 1)
       
       #Compute bootstrap MLE
-      NLM <- nlm(f = NEGLOGLIKE, p = start.phi, hessian = TRUE, gradtol = 1e-20, steptol = 1e-20)
+      NLM <- nlm(f = NEGLOGLIKE.bs, p = start.phi, hessian = TRUE, gradtol = 1e-20, steptol = 1e-20)
       MLE.phi.bootstrap[j] <- NLM$estimate }
     
     #Update the MLE in output
@@ -249,21 +260,21 @@ MLE.matching <- function(x, size, CI.method = 'asymptotic', conf.level = 0.95, b
   OUT.MLE }
 
 
-print.mle.matching <- function(object, digits = 6) {
+print.mle.matching <- function(x, digits = 6, ...) {
   
   #Check input
-  if (!('mle.matching' %in% class(object)))    stop('Error: This print method is for objects of class \'mle.matching\'')
+  if (!('mle.matching' %in% class(x)))    stop('Error: This print method is for objects of class \'mle.matching\'')
   
   #Extract information
-  DATA.NAME <- object$data.name
-  DATA      <- object$data
-  SIZE      <- object$size
-  MLE.DF    <- object$MLE
+  DATA.NAME <- x$data.name
+  DATA      <- x$data
+  SIZE      <- x$size
+  MLE.DF    <- x$MLE
   MLE.prob  <- MLE.DF[1, 1]
   MLE.phi   <- MLE.DF[1, 2]
-  LL.MAX    <- object$maxloglike
-  LL.MAX.M  <- object$maxloglike.mean
-  CONF      <- object$CI.prob
+  LL.MAX    <- x$maxloglike
+  LL.MAX.M  <- x$maxloglike.mean
+  CONF      <- x$CI.prob
   CI.method <- attributes(CONF)$method
   
   #Print title
