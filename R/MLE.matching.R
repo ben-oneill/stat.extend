@@ -19,7 +19,7 @@
 #' 
 #' @examples 
 #' 
-#' X <- rmatching(20, 5, .1)
+#' X <- rmatching(20, 5, prob=.1)
 #' 
 #' # For comparison
 #' # MASS::fitdistr(X, dmatching, start=list(prob=.5), size=5, lower=c(prob=0), upper=c(prob=1))
