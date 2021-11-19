@@ -195,10 +195,10 @@ dmatching <- function(x, size, trials = 1, prob = 0, log = FALSE, approx = (tria
   if (log) { OUT } else { exp(OUT) } }
 
 #' @rdname Matching
-pmatching <- function(x, size, trials = 1, prob = 0, lower.tail = TRUE, log.p = FALSE, approx = (trials > 100)) {
+pmatching <- function(q, size, trials = 1, prob = 0, lower.tail = TRUE, log.p = FALSE, approx = (trials > 100)) {
 
   #Check inputs
-  if (!is.numeric(x))                       stop('Error: Input x should be numeric')
+  if (!is.numeric(q))                       stop('Error: Input q should be numeric')
   if (!is.numeric(trials))                  stop('Error: Input trials should be a positive integer')
   if (!is.numeric(size))                    stop('Error: Size parameter should be a non-negative integer')
   if (!is.numeric(prob))                    stop('Error: Probability parameter should be numeric')
@@ -222,7 +222,7 @@ pmatching <- function(x, size, trials = 1, prob = 0, lower.tail = TRUE, log.p = 
   if (prob > 1)                             stop('Error: Probability parameter should be between zero and one')
 
   #Set sample total
-  T <- x
+  T <- q
   
   ########################################################################################
   ################################# TRIVIAL CASES ########################################
@@ -285,7 +285,7 @@ pmatching <- function(x, size, trials = 1, prob = 0, lower.tail = TRUE, log.p = 
     
     #Deal with case where n = Inf and prob = 0
     if ((n == Inf)&(prob == 0)) {
-      LOGPROBS <- dpois(x, lambda = 1, log = TRUE) }
+      LOGPROBS <- dpois(q, lambda = 1, log = TRUE) }
     
     #Deal with non-trivial case where 1 < n < Inf and prob = 0
     #Set up vector of log-probabilities for the distribution

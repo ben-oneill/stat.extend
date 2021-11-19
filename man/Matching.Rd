@@ -11,7 +11,7 @@
 dmatching(x, size, trials = 1, prob = 0, log = FALSE, approx = (trials > 100))
 
 pmatching(
-  x,
+  q,
   size,
   trials = 1,
   prob = 0,
