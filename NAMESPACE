@@ -5,7 +5,7 @@ export(CONF.prop)
 export(lsubfactorial)
 export(reformat)
 
-export(dmatching, pmatching, qmatching, rmatching, moments.matching, MLE.matching)
+export(dmatching, pmatching, qmatching, rmatching, moments.matching, MLE.matching, matching.test)
 
 
 S3method(print,hdr)

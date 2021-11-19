@@ -4,10 +4,12 @@
 \alias{moments.matching}
 \title{Moments of the generalised matching distribution}
 \usage{
-moments.matching(size, prob = 0, include.sd = FALSE)
+moments.matching(size, trials = 1, prob = 0, include.sd = FALSE)
 }
 \arguments{
 \item{size}{The size parameter for the generalised matching distribution (number of objects to match)}
+
+\item{trials}{The trials parameter for the generalised matching distribution (number of times the matching game is repeated)}
 
 \item{prob}{The probability parameter for the generalised matching distribution (probability of known match)}
 

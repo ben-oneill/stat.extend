@@ -8,15 +8,14 @@
 #' 
 #' For data vectors \code{x} that are not too large we perform an exact test by computing the exact distribution of the 
 #' mean number of matches.  If the number of data points is too large then we perform an approximate test using the normal
-#' approxiation to the distribution of the mean number of matches.  The parameter \code{max.m} sets the maximum number of 
+#' approximation to the distribution of the mean number of matches.  The parameter \code{max.m} sets the maximum number of 
 #' data points where we perform an exact test.
 #'
-#' @usage \code{matching.test(n, x, alternative = 'greater)}
 #' @param x Sample vector containing values from the generalised matching distribution
 #' @param size The size parameter (number of objects to match)
 #' @param null.prob The null value of the probability parameter
 #' @param alternative The alternative hypothesis
-#' @param approx A logical value specifying whether to use the normal approximation to the distribuion
+#' @param approx A logical value specifying whether to use the normal approximation to the distribution
 #' @return An htest object giving the output of the matching test
 
 matching.test <- function(x, size, null.prob = 0, alternative = 'greater', approx = (length(x) > 100)) {

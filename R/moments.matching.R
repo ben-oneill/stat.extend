@@ -118,6 +118,11 @@ moments.matching <- function(size, trials = 1, prob = 0, include.sd = FALSE) {
      VAR.TOTAL <- m*VAR
     SKEW.TOTAL <- SKEW/sqrt(m)
     KURT.TOTAL <- 3 + (KURT-3)/m }
+  else {
+    MEAN.TOTAL <- MEAN
+    VAR.TOTAL <- VAR
+    SKEW.TOTAL <- SKEW
+    KURT.TOTAL <- KURT}
 
   #Generate output
   if (include.sd) {

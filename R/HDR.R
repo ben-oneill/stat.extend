@@ -53,14 +53,14 @@
 #'   HDR.gengamma\tab  d, shape1 \tab k, shape2 \tab rate, scale \cr
 #'   HDR.gumbelII\tab shape    \tab scale  \tab       \cr
 #'   HDR.lgamma  \tab shape    \tab scale  \tab location\cr
-#'   HDR.matching   \tab size    \tab trials     \tab prob   \tab       \cr
+#'   HDR.matching   \tab size  \tab prob   \tab trials & approx      \cr
 #'   }
 #'
 #' The table above shows the parameters in each of the distributions.  Some have default values, but most need to be specified.  (For the gamma
 #' distribution you should specify either the \code{rate} or \code{scale} but not both.)
 #'
 #' @param cover.prob The probability coverage for the HDR (scalar between zero and one).  The significance level for the HDR i is \code{1-cover.prob}.  
-#' @param shape1,shape2,ncp,location,scale,df,rate,df1,df2,meanlog,sdlog,mean,sd,min,max,shape,size,prob,m,n,k,mu,lambda,alpha,beta,sigma,xi,epsilon,a,b,y0,d Distribution parameters.
+#' @param shape1,shape2,ncp,location,scale,df,rate,df1,df2,meanlog,sdlog,mean,sd,min,max,shape,size,prob,m,n,k,mu,lambda,alpha,beta,sigma,xi,epsilon,a,b,y0,d,trials,approx Distribution parameters.
 #' @inheritParams checkIterArgs 
 #' @return An interval object with classes \code{hdr} and \code{interval} containing the highest density region and related information.
 #' @name HDR

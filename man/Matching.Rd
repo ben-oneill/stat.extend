@@ -8,22 +8,42 @@
 \alias{rmatching}
 \title{The Generalized Matching Distribution}
 \usage{
-dmatching(x, size, prob = 0, log = FALSE)
+dmatching(x, size, trials = 1, prob = 0, log = FALSE, approx = (trials > 100))
 
-pmatching(q, size, prob = 0, lower.tail = TRUE, log.p = FALSE)
+pmatching(
+  x,
+  size,
+  trials = 1,
+  prob = 0,
+  lower.tail = TRUE,
+  log.p = FALSE,
+  approx = (trials > 100)
+)
 
-qmatching(p, size, prob = 0, lower.tail = TRUE, log.p = FALSE)
+qmatching(
+  p,
+  size,
+  trials = 1,
+  prob = 0,
+  lower.tail = TRUE,
+  log.p = FALSE,
+  approx = (trials > 100)
+)
 
-rmatching(n, size, prob = 0)
+rmatching(n, size, trials = 1, prob = 0)
 }
 \arguments{
 \item{x, q}{A vector of numeric values to be used as arguments for the mass function}
 
 \item{size}{The size parameter for the generalised matching distribution (number of objects to match)}
 
+\item{trials}{The trials parameter for the generalised matching distribution (number of times the matching game is repeated)}
+
 \item{prob}{The probability parameter for the generalised matching distribution (probability of known match)}
 
 \item{log, log.p}{A logical value specifying whether results should be returned as log-probabilities}
+
+\item{approx}{A logical value specifying whether to use the normal approximation to the distribution}
 
 \item{lower.tail}{A logical value specifying whether the input represents lower or upper tail probabilities}
 
@@ -37,7 +57,10 @@ rmatching(n, size, prob = 0)
 }
 \description{
 Density, distribution function, quantile function and random generation for
-the generalized matching distribution with parameters \code{size} and \code{prob}.
+the generalized matching distribution with parameters \code{size}, \code{trials} and \code{prob}. 
+The distribution is for the total number of matches over all trials.  In each trial the player 
+initially matches objects independently with probability \code{prob} and then allocates remaining
+objects using a random permutation.
 }
 \examples{
 x <- rmatching(1000, 5)
