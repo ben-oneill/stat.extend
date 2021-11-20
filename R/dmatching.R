@@ -95,6 +95,12 @@ dmatching <- function(x, size, trials = 1, prob = 0, log = FALSE, approx = (tria
     for (i in 1:length(T)) {
       if (T[i] == n*m) { OUT[i] <- 0 } }
     if (log) { return(OUT) } else { return(exp(OUT)) } }
+  
+  #Deal with case where n = Inf and prob = 0
+  #Distribution is Poisson with rate m
+  if ((n == Inf)&(prob == 0)) {
+    OUT <- dpois(T, lambda = m, log = TRUE)
+    if (log) { return(OUT) } else { return(exp(OUT)) } }
 
   #Deal with special case where n = Inf and prob > 0
   #Distribution is a point-mass on infinity
@@ -118,10 +124,6 @@ dmatching <- function(x, size, trials = 1, prob = 0, log = FALSE, approx = (tria
     LOGPROBS.TOTAL <- LOGPROBS.TOTAL - matrixStats::logSumExp(LOGPROBS.TOTAL)
     
   } else {
-    
-    #Deal with case where n = Inf and prob = 0
-    if ((n == Inf)&(prob == 0)) {
-      LOGPROBS <- dpois(x, lambda = 1, log = TRUE) }
     
     #Deal with non-trivial case where 1 < n < Inf and prob = 0
     #Set up vector of log-probabilities for the distribution
@@ -258,6 +260,12 @@ pmatching <- function(x, size, trials = 1, prob = 0, lower.tail = TRUE, log.p = 
       if (T[i] >= n*m) { OUT[i] <- 0 } }
     if (!lower.tail) { OUT <- VGAM::log1mexp(-OUT) }
     if (log.p) { return(OUT) } else { return(exp(OUT)) } }
+  
+  #Deal with case where n = Inf and prob = 0
+  #Distribution is Poisson with rate m
+  if ((n == Inf)&(prob == 0)) {
+    OUT <- ppois(T, lambda = m, lower.tail = lower.tail, log.p = TRUE)
+    if (log.p) { return(OUT) } else { return(exp(OUT)) } }
 
   #Deal with special case where n = Inf and prob > 0
   #Distribution is a point-mass on infinity
@@ -282,10 +290,6 @@ pmatching <- function(x, size, trials = 1, prob = 0, lower.tail = TRUE, log.p = 
     LOGPROBS.TOTAL <- LOGPROBS.TOTAL - matrixStats::logSumExp(LOGPROBS.TOTAL)
     
   } else {
-    
-    #Deal with case where n = Inf and prob = 0
-    if ((n == Inf)&(prob == 0)) {
-      LOGPROBS <- dpois(x, lambda = 1, log = TRUE) }
     
     #Deal with non-trivial case where 1 < n < Inf and prob = 0
     #Set up vector of log-probabilities for the distribution
@@ -424,6 +428,12 @@ qmatching <- function(p, size, trials = 1, prob = 0, lower.tail = TRUE, log.p = 
     OUT <- rep(n*m, length(p))
     return(OUT) }
   
+  #Deal with case where n = Inf and prob = 0
+  #Distribution is Poisson with rate m
+  if ((n == Inf)&(prob == 0)) {
+    OUT <- qpois(p, lambda = m, lower.tail = lower.tail, log.p = log.p)
+    return(OUT) }
+  
   #Deal with special case where n = Inf and prob > 0
   #Distribution is a point-mass on infinity
   if ((n == Inf)&(prob > 0)) {
@@ -444,10 +454,6 @@ qmatching <- function(p, size, trials = 1, prob = 0, lower.tail = TRUE, log.p = 
     LOGPROBS.TOTAL <- LOGPROBS.TOTAL - matrixStats::logSumExp(LOGPROBS.TOTAL)
     
   } else {
-    
-    #Deal with case where n = Inf and prob = 0
-    if ((n == Inf)&(prob == 0)) {
-      LOGPROBS <- dpois(x, lambda = 1, log = TRUE) }
     
     #Deal with non-trivial case where 1 < n < Inf and prob = 0
     #Set up vector of log-probabilities for the distribution
@@ -528,7 +534,6 @@ qmatching <- function(p, size, trials = 1, prob = 0, lower.tail = TRUE, log.p = 
   #Return output
   QUANTILES }
 
-
 #' @rdname Matching
 rmatching <- function(n, size, trials = 1, prob = 0) {
   
@@ -551,8 +556,46 @@ rmatching <- function(n, size, trials = 1, prob = 0) {
   if (prob < 0)                              stop('Error: Probability parameter should be between zero and one')
   if (prob > 1)                              stop('Error: Probability parameter should be between zero and one')
   
+  ########################################################################################
+  ################################# TRIVIAL CASES ########################################
+  ########################################################################################
+  
   #Deal with trivial case where n = 0
   if (n == 0) { return(numeric(0)) }
+  
+  #Deal with trivial case where size = 0
+  #Distribution is a point-mass on zero
+  if (nn == 0) {
+    OUT <- rep(0, n)
+    return(OUT) }
+  
+  #Deal with trivial case where n = 1
+  #Distribution is a point-mass on m
+  if (nn == 1) {
+    OUT <- rep(m, n)
+    return(OUT) }
+  
+  #Deal with special case where prob = 1
+  #Distribution is a point-mass on size*m
+  if (prob == 1) {
+    OUT <- rep(nn*m, n)
+    return(OUT) }
+  
+  #Deal with case where size = Inf and prob = 0
+  #Distribution is Poisson with rate m
+  if ((nn == Inf)&(prob == 0)) { 
+    OUT <- rpois(n, lambda = m)
+    return(OUT) }
+  
+  #Deal with case where size = Inf and prob > 0
+  #Distribution is a point-mass on infinity
+  if ((nn == Inf)&(prob > 0)) { 
+    OUT <- rep(Inf, n)
+    return(OUT) }
+  
+  ########################################################################################
+  ############################### NON-TRIVIAL CASES ######################################
+  ########################################################################################
   
   #Generate output vector
   RAND  <- matrix(0, nrow = m, ncol = n)
