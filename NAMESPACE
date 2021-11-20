@@ -19,5 +19,5 @@ importFrom("stats", "dbeta", "dcauchy", "dexp", "df", "dgamma",
            "qbinom", "qexp", "qf", "qgamma", "qgeom", "qhyper",
            "qlnorm", "qnbinom", "qnorm", "qpois", "qt", "qunif",
            "qweibull", "qcauchy", "dchisq", "qchisq",
-           "dbinom", "dpois", "rbinom")
+           "dbinom", "dpois", "rbinom", "rpois")
 importFrom("stats", "quantile", "sd", "var")
