@@ -625,6 +625,17 @@ HDR.matching <- function(cover.prob, size, trials = 1, prob = 0, approx = (trial
     LOGPROBS.TOTAL <- rep(-Inf, n*m+1)
     LOGPROBS.TOTAL[n*m+1] <- 0 }
   
+  #Deal with case where n = Inf and prob = 0
+  #Distribution is Poisson with rate m
+  if ((n == Inf)&(prob == 0)) {
+    HHH  <- stat.extend::HDR.pois(cover.prob = cover.prob, lambda = m)
+    DIST <- ifelse(prob == 0, 
+                   paste0('classical matching distribution with ', m, ' trials with size = Inf'),
+                   paste0('matching distribution with ', m, 
+                          ' trials with size = Inf and matching probability = ', round(prob, 4)))
+    attr(HHH, 'distribution') <- DIST
+    return(HHH) }
+  
   #Deal with special case where n = Inf and prob > 0
   #Distribution is a point-mass on infinity
   if ((n == Inf)&(prob > 0)) {
@@ -647,10 +658,6 @@ HDR.matching <- function(cover.prob, size, trials = 1, prob = 0, approx = (trial
       LOGPROBS.TOTAL <- LOGPROBS.TOTAL - matrixStats::logSumExp(LOGPROBS.TOTAL)
       
     } else {
-      
-      #Deal with case where n = Inf and prob = 0
-      if ((n == Inf)&(prob == 0)) {
-        LOGPROBS <- dpois(x, lambda = 1, log = TRUE) }
       
       #Deal with non-trivial case where 1 < n < Inf and prob = 0
       #Set up vector of log-probabilities for the distribution
@@ -720,8 +727,8 @@ HDR.matching <- function(cover.prob, size, trials = 1, prob = 0, approx = (trial
   
   #Set distribution name
   DIST <- ifelse(prob == 0, 
-                 paste0('classical total-matching distribution with ', m, ' trials with size = ', n),
-                 paste0('total-matching distribution with ', m, ' trials with size = ', n, 
+                 paste0('classical matching distribution with ', m, ' trials with size = ', n),
+                 paste0('matching distribution with ', m, ' trials with size = ', n, 
                         ' and matching probability = ', round(prob, 4)))
     
   #Return HDR output
@@ -729,3 +736,4 @@ HDR.matching <- function(cover.prob, size, trials = 1, prob = 0, approx = (trial
                                    supp.min = 0, supp.max = n*m,
                                    distribution = DIST)
   HDR }
+
