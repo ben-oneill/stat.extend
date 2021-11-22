@@ -53,13 +53,14 @@
 #'   HDR.gengamma\tab  d, shape1 \tab k, shape2 \tab rate, scale \cr
 #'   HDR.gumbelII\tab shape    \tab scale  \tab       \cr
 #'   HDR.lgamma  \tab shape    \tab scale  \tab location\cr
+#'   HDR.matching   \tab size  \tab prob   \tab trials & approx      \cr
 #'   }
 #'
 #' The table above shows the parameters in each of the distributions.  Some have default values, but most need to be specified.  (For the gamma
 #' distribution you should specify either the \code{rate} or \code{scale} but not both.)
 #'
 #' @param cover.prob The probability coverage for the HDR (scalar between zero and one).  The significance level for the HDR i is \code{1-cover.prob}.  
-#' @param shape1,shape2,ncp,location,scale,df,rate,df1,df2,meanlog,sdlog,mean,sd,min,max,shape,size,prob,m,n,k,mu,lambda,alpha,beta,sigma,xi,epsilon,a,b,y0,d Distribution parameters.
+#' @param shape1,shape2,ncp,location,scale,df,rate,df1,df2,meanlog,sdlog,mean,sd,min,max,shape,size,prob,m,n,k,mu,lambda,alpha,beta,sigma,xi,epsilon,a,b,y0,d,trials,approx Distribution parameters.
 #' @inheritParams checkIterArgs 
 #' @return An interval object with classes \code{hdr} and \code{interval} containing the highest density region and related information.
 #' @name HDR
@@ -579,3 +580,160 @@ print.hdr <- function(x, ...) {
         writeLines(format(object))
         invisible(c(object)) } }
   cat('\n'); }
+
+
+#' @rdname HDR
+HDR.matching <- function(cover.prob, size, trials = 1, prob = 0, approx = (trials > 100)) {
+
+  #Check inputs
+  if (!is.numeric(trials))                  stop('Error: Input trials should be a positive integer')
+  if (!is.numeric(size))                    stop('Error: Size parameter should be a non-negative integer')
+  if (!is.numeric(prob))                    stop('Error: Probability parameter should be numeric')
+  if (!is.logical(approx))                  stop('Error: Input approx should be a single logical value')
+  if (length(trials) != 1)                  stop('Error: Input trials should be a single positive integer')
+  if (length(size) != 1)                    stop('Error: Size parameter should be a single non-negative integer')
+  if (length(prob) != 1)                    stop('Error: Probability parameter should be a single numeric value')
+  if (length(approx) != 1)                  stop('Error: Input approx should be a single logical value')
+  if (trials == Inf)                        stop('Error: Input trials must be finite')
+  m <- as.integer(trials)
+  if (m != trials)                          stop('Error: Input trials should be a positive integer')
+  if (m <= 0)                               stop('Error: Input trials should be a positive integer')
+  if (size < Inf) { n <- as.integer(size) } else { n <- Inf }
+  if (n != size)                            stop('Error: Size parameter should be a non-negative integer')
+  if (n < 0)                                stop('Error: Size parameter should be a non-negative integer')
+  if (prob < 0)                             stop('Error: Probability parameter should be between zero and one')
+  if (prob > 1)                             stop('Error: Probability parameter should be between zero and one')
+
+  ########################################################################################
+  ################################# TRIVIAL CASES ########################################
+  ########################################################################################
+
+  #Deal with trivial case where n = 0
+  #Distribution is a point-mass on zero
+  if (n == 0) { 
+    LOGPROBS.TOTAL <- 0 }
+
+  #Deal with trivial case where n = 1
+  #Distribution is a point-mass on m
+  if (n == 1) { 
+    LOGPROBS.TOTAL <- rep(-Inf, m+1)
+    LOGPROBS.TOTAL[m+1] <- 0 }
+
+  #Deal with special case where prob = 1
+  #Distribution is a point-mass on n*m
+  if (prob == 1) {
+    LOGPROBS.TOTAL <- rep(-Inf, n*m+1)
+    LOGPROBS.TOTAL[n*m+1] <- 0 }
+  
+  #Deal with case where n = Inf and prob = 0
+  #Distribution is Poisson with rate m
+  if ((n == Inf)&(prob == 0)) {
+    HHH  <- stat.extend::HDR.pois(cover.prob = cover.prob, lambda = m)
+    DIST <- ifelse(prob == 0, 
+                   paste0('classical matching distribution with ', m, ' trials with size = Inf'),
+                   paste0('matching distribution with ', m, 
+                          ' trials with size = Inf and matching probability = ', round(prob, 4)))
+    attr(HHH, 'distribution') <- DIST
+    return(HHH) }
+  
+  #Deal with special case where n = Inf and prob > 0
+  #Distribution is a point-mass on infinity
+  if ((n == Inf)&(prob > 0)) {
+    stop('Error: Distribution is a point-mass on infinity') }
+
+  ########################################################################################
+  ############################### NON-TRIVIAL CASES ######################################
+  ########################################################################################
+
+  #Deal with non-trivial cases
+  if ((n > 1)&(prob < 1)) {
+    
+    #Compute distribution of sample total
+    if (approx) {
+      
+      #Compute normal approximation to generalised matching distribution
+      MEAN <- 1 + n*prob - prob^n
+      VAR  <- 1 - prob^(2*n) + n*(prob - prob^2 - prob^(n-1) - prob^n + 2*prob^(n+1))
+      LOGPROBS.TOTAL <- dnorm(0:(n*m), mean = m*MEAN, sd = sqrt(m*VAR), log = TRUE)
+      LOGPROBS.TOTAL <- LOGPROBS.TOTAL - matrixStats::logSumExp(LOGPROBS.TOTAL)
+      
+    } else {
+      
+      #Deal with non-trivial case where 1 < n < Inf and prob = 0
+      #Set up vector of log-probabilities for the distribution
+      if ((n < Inf)&(prob == 0)) {
+        LOGPROBS <- rep(-Inf, n+1)
+        LOGPROBS[n+1] <- -lfactorial(n)
+        for (i in 1:n) {
+          k <- n-i
+          T1 <- log(n-k-1) + LOGPROBS[k+2]
+          T2 <- ifelse(k < n-1, log(k+2) + LOGPROBS[k+3], -Inf)
+          LOGPROBS[k+1] <- log(k+1) - log(n-k) + matrixStats::logSumExp(c(T1, T2)) }
+        LOGPROBS <- LOGPROBS - matrixStats::logSumExp(LOGPROBS) }
+      
+      #Deal with non-trivial where 0 < prob < 1
+      #Set up vector of log-probabilities for the distribution
+      if ((prob > 0)&(prob < 1)) {
+        
+        #Compute a matrix of classical log-probability values
+        BASE.LOGPROBS <- matrix(-Inf, nrow = n+1, ncol = n+1)
+        rownames(BASE.LOGPROBS) <- sprintf('size[%s]',  0:n)
+        colnames(BASE.LOGPROBS) <- sprintf('match[%s]', 0:n)
+        BASE.LOGPROBS[1,1] <- 0
+        for (nn in 1:n) {
+          BASE.LOGPROBS[nn+1, nn+1] <- -lfactorial(nn)
+          for (i in 1:nn) {
+            k <- nn-i
+            T1 <- log(nn-k-1) + BASE.LOGPROBS[nn+1, k+2]
+            T2 <- ifelse(k < nn-1, log(k+2) + BASE.LOGPROBS[nn+1, k+3], -Inf)
+            BASE.LOGPROBS[nn+1, k+1] <- log(k+1) - log(nn-k) +
+              matrixStats::logSumExp(c(T1, T2)) }
+          BASE.LOGPROBS[nn+1, ] <- BASE.LOGPROBS[nn+1, ] -
+            matrixStats::logSumExp(BASE.LOGPROBS[nn+1, ]) }
+        
+        #Set matrix M
+        M <- matrix(-Inf, nrow = n+1, ncol = n+1)
+        rownames(M) <- sprintf('k[%s]', 0:n)
+        colnames(M) <- sprintf('l[%s]', 0:n)
+        for (k in 0:n) {
+          for (l in 0:k) {
+            M[k+1, l+1] <- BASE.LOGPROBS[n-l+1, k-l+1] } }
+        
+        #Compute vector of log-probability values
+        LOGPROBS <- rep(-Inf, n+1)
+        LOGBINOM <- dbinom(0:n, size = n, prob = prob, log = TRUE)
+        for (k in 0:n) {
+          LOGPROBS[k+1] <- matrixStats::logSumExp(LOGBINOM + M[k+1, ]) }
+        LOGPROBS <- LOGPROBS - matrixStats::logSumExp(LOGPROBS) }
+      
+      #Compute log-probabilities for sample total
+      LOGPROBS.TOTAL.ALL <- matrix(-Inf, nrow = m, ncol = n*m+1)
+      LOGPROBS.TOTAL.ALL[1, 0:n+1] <- LOGPROBS
+      if (m > 1) {
+        for (t in 2:m) {
+          for (s in 0:(n*t)) {
+            k  <- 0:min(s, n)
+            s0 <- s - k
+            T1 <- LOGPROBS.TOTAL.ALL[t-1, s0+1]
+            T2 <- LOGPROBS[k+1]
+            LOGPROBS.TOTAL.ALL[t, s+1] <- matrixStats::logSumExp(T1 + T2) }
+          LOGPROBS.TOTAL.ALL[t, ] <- LOGPROBS.TOTAL.ALL[t, ] - 
+            matrixStats::logSumExp(LOGPROBS.TOTAL.ALL[t, ]) } } 
+      LOGPROBS.TOTAL <- LOGPROBS.TOTAL.ALL[m, ] } }
+
+  #Set density function
+  DENS <- function(x) {
+    if (x %in% 0:(n*m)) { exp(LOGPROBS.TOTAL[x+1]) } else { 0 } }
+  
+  #Set distribution name
+  DIST <- ifelse(prob == 0, 
+                 paste0('classical matching distribution with ', m, ' trials with size = ', n),
+                 paste0('matching distribution with ', m, ' trials with size = ', n, 
+                        ' and matching probability = ', round(prob, 4)))
+    
+  #Return HDR output
+  HDR <- stat.extend::HDR.discrete(cover.prob = cover.prob, f = DENS, 
+                                   supp.min = 0, supp.max = n*m,
+                                   distribution = DIST)
+  HDR }
+

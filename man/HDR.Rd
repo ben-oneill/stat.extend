@@ -19,6 +19,7 @@
 \alias{HDR.pois}
 \alias{HDR.nbinom}
 \alias{HDR.arcsine}
+\alias{HDR.matching}
 \alias{HDR.betapr}
 \alias{HDR.fatigue}
 \alias{HDR.gompertz}
@@ -157,6 +158,8 @@ HDR.arcsine(
   steptol = 1e-10,
   iterlim = 100
 )
+
+HDR.matching(cover.prob, size, trials = 1, prob = 0, approx = (trials > 100))
 
 HDR.betapr(
   cover.prob,
@@ -322,7 +325,7 @@ HDR.lgamma(
 
 \item{iterlim}{Parameter for the nlm optimisation - a positive integer specifying the maximum number of iterations to be performed before the program is terminated (see [\code{nlm} doccumentation](https://stat.ethz.ch/R-manual/R-patched/library/stats/html/nlm.html)).}
 
-\item{shape1, shape2, ncp, location, scale, df, rate, df1, df2, meanlog, sdlog, mean, sd, min, max, shape, size, prob, m, n, k, mu, lambda, alpha, beta, sigma, xi, epsilon, a, b, y0, d}{Distribution parameters.}
+\item{shape1, shape2, ncp, location, scale, df, rate, df1, df2, meanlog, sdlog, mean, sd, min, max, shape, size, prob, m, n, k, mu, lambda, alpha, beta, sigma, xi, epsilon, a, b, y0, d, trials, approx}{Distribution parameters.}
 }
 \value{
 An interval object with classes \code{hdr} and \code{interval} containing the highest density region and related information.
@@ -382,6 +385,7 @@ is done by optimisation using the \code{nlm} function.
   HDR.gengamma\tab  d, shape1 \tab k, shape2 \tab rate, scale \cr
   HDR.gumbelII\tab shape    \tab scale  \tab       \cr
   HDR.lgamma  \tab shape    \tab scale  \tab location\cr
+  HDR.matching   \tab size  \tab prob   \tab trials & approx      \cr
   }
 
 The table above shows the parameters in each of the distributions.  Some have default values, but most need to be specified.  (For the gamma
