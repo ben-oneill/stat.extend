@@ -4,14 +4,14 @@ library(stat.extend)
 
 x <- rmatching(1000, 5)
 
-stopifnot(!4 %in% 5)
+stopifnot(!4 %in% x)
 
 
 fx <- dmatching(0:5, 5)
 
 stopifnot(fx[4 + 1] == 0)
 
-stopifnot(sum(fx) == 1)
+stopifnot(all.equal(sum(fx), 1))
 
 stopifnot(all.equal(cumsum(fx), pmatching(0:5, 5)))
 
