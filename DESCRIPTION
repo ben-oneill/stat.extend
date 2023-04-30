@@ -3,8 +3,8 @@ Type: Package
 Title: Highest Density Regions and Other Functions of Distributions
 Version: 0.2.1
 Authors@R: c(
-    person("Ben", "O'Neill", email = "ben.oneill@hotmail.com", role = c("aut", "cph")),
-    person("Neal", "Fultz", email = "nfultz@gmail.com", role = c("cre","ctb"))
+    person("Ben", "O'Neill", email = "ben.oneill@hotmail.com", role = c("cre","aut", "cph")),
+    person("Neal", "Fultz", email = "nfultz@gmail.com", role = c("ctb"))
     )
 Copyright: Ben O'Neill 2020
 Description: Highest Density Regions are the smallest set in the support of a
@@ -23,4 +23,4 @@ Suggests:
     invgamma,
     matrixStats,
     VGAM
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.1
